@@ -7,7 +7,9 @@ setup(
     description='Togglepo shows how much you achieve your goal.',
     author='Takumi Ishii',
     install_requires=[
-        'click'
+        'click',
+        'python-dateutil',
+        'requests'
     ],
     url='https://github.com/it-akumi/togglepo',
     entry_points = {
