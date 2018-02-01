@@ -41,9 +41,9 @@ class TogglAPI:
 
         return r.json()
 
-    def get_time_entries(self, since):
-        """Get time entries from since to today."""
-        time_entries = list()
+    def all_time_entries(self, since):
+        """Get all time entries from since to today."""
+        time_entries = dict()
         while True:
             since_dt = datetime.strptime(since, '%Y-%m-%d')
             after_1_year_from_since_dt = since_dt + relativedelta(years=1)
@@ -52,7 +52,11 @@ class TogglAPI:
                 '%Y-%m-%d'
             )
             entries = self._query(since, after_1_year_from_since)
-            time_entries.extend(entries['data'])
+
+            for datum in entries['data']:
+                project = datum['title']['project']
+                time_s = datum['time'] / 1000
+                time_entries[project] = time_entries.get(project, 0) + time_s
 
             if datetime.today() <= after_1_year_from_since_dt:
                 return time_entries
