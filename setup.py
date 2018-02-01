@@ -1,3 +1,4 @@
+from setuptools import find_packages
 from setuptools import setup
 
 
@@ -6,6 +7,7 @@ setup(
     version='0.0',
     description='Togglepo shows how much you achieve your goal.',
     author='Takumi Ishii',
+    packages = find_packages(),
     install_requires=[
         'click',
         'prettytable',
