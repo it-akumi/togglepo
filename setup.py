@@ -8,6 +8,7 @@ setup(
     author='Takumi Ishii',
     install_requires=[
         'click',
+        'prettytable',
         'python-dateutil',
         'requests'
     ],
