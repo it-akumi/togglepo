@@ -1,8 +1,6 @@
 # coding:utf-8
+"""A wrapper of Toggl API."""
 import sys
-from datetime import datetime
-
-from dateutil.relativedelta import relativedelta
 
 import requests
 from requests.auth import HTTPBasicAuth
@@ -12,7 +10,7 @@ class TogglAPI:
     """A wrapper of Toggl API."""
 
     def __init__(self, api_token, workspace_id):
-        """Set api_token and workspace_id as instance variables."""
+        """Set api_token and workspace_id."""
         self._api_token = api_token
         self._workspace_id = workspace_id
 
@@ -28,37 +26,25 @@ class TogglAPI:
         }
 
         try:
-            r = requests.get(
+            report = requests.get(
                 url,
                 params=params,
                 auth=HTTPBasicAuth(self._api_token, 'api_token')
             )
         except requests.exceptions.ConnectionError:
-            sys.stderr.write('Failed to connect to api server.')
-            sys.stderr.write('Please check your network.')
-            sys.stderr.write('See "tglp --help" for more details.')
+            sys.stderr.write('Failed to connect to api server.\n')
             sys.exit(1)
 
-        return r.json()
+        return report.json()
 
-    def all_time_entries(self, since):
-        """Get all time entries from since to today."""
-        time_entries = dict()
-        while True:
-            since_dt = datetime.strptime(since, '%Y-%m-%d')
-            after_1_year_from_since_dt = since_dt + relativedelta(years=1)
-            after_1_year_from_since = datetime.strftime(
-                after_1_year_from_since_dt,
-                '%Y-%m-%d'
-            )
-            entries = self._query(since, after_1_year_from_since)
+    def total_time_entries(self, years):
+        """Aggregate time entry of all years."""
+        total = dict()
 
-            for datum in entries['data']:
-                project = datum['title']['project']
-                time_s = datum['time'] / 1000
-                time_entries[project] = time_entries.get(project, 0) + time_s
-
-            if datetime.today() <= after_1_year_from_since_dt:
-                return time_entries
-            else:
-                since = after_1_year_from_since
+        for year in years:
+            report = self._query(**year)
+            for datum in report['data']:
+                prj = datum['title']['project']
+                time_sec = datum['time'] / 1000
+                total[prj] = total.get(prj, 0) + time_sec
+        return total
