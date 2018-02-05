@@ -18,9 +18,7 @@ class Parser:
         if os.path.exists(config_file_path):
             self._config_path = config_file_path
         else:
-            sys.stderr.write("No config found...\n")
-            sys.stderr.write("Is there any config ")
-            sys.stderr.write("in your home directory?\n")
+            sys.stderr.write('No config found.\n')
             sys.exit(1)
 
     def parse_json_config(self):
@@ -29,7 +27,7 @@ class Parser:
             try:
                 config = json.load(config_file)
             except json.decoder.JSONDecodeError:
-                sys.stderr.write("Config allowed only ")
-                sys.stderr.write("in json format.\n")
+                sys.stderr.write('Config allowed only ')
+                sys.stderr.write('in json format.\n')
                 sys.exit(1)
         return config
