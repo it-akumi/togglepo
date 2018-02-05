@@ -14,12 +14,16 @@ class Goal:
         self._goal = goal_h * 3600
         self._achieved = achieved_sec
 
-    def daily_goal(self, remaining_days):
+    def daily_goal(self, remaining_days, max_daily_working_hours):
         """Daily goal for goal achievement in remaining days."""
         if remaining_days <= 0:
             return None
+
+        daily_goal = self._goal / remaining_days
+        if daily_goal > max_daily_working_hours * 3600:
+            return None
         else:
-            return self._goal / remaining_days
+            return daily_goal
 
     def achievement_rate(self):
         """Achievement rate in percent."""
