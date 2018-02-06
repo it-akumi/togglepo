@@ -1,33 +1,30 @@
 # coding:utf-8
-"""Handler of config file."""
-import json
-import os
+"""A handler of config."""
 import sys
 
 
-class Parser:
-    """A wrapper of JSON parser."""
+class Config:
+    """A handler of config."""
 
-    def __init__(self, filename='.tglp.json'):
-        """Set config file path if it exists."""
-        config_file_path = os.path.join(
-            os.getenv('HOME'),
-            filename
+    def __init__(self, config_dict):
+        """Set config and error messages of a lack of requirement."""
+        self._config = config_dict
+        self._required_not_found_errors = dict(
+            API_TOKEN='Set Your Toggl API token.\n',
+            WORKSPACE_ID='Set workspace id to access.\n',
+            AGGREGATION_START='Set start date of data aggregation.\n',
         )
 
-        if os.path.exists(config_file_path):
-            self._config_path = config_file_path
-        else:
-            sys.stderr.write('No config found.\n')
-            sys.exit(1)
-
-    def parse_json_config(self):
-        """Load and return config."""
-        with open(self._config_path, 'r') as config_file:
-            try:
-                config = json.load(config_file)
-            except json.decoder.JSONDecodeError:
-                sys.stderr.write('Config allowed only ')
-                sys.stderr.write('in json format.\n')
+    def _exist_requirements(self):
+        """Check if config has all required parameters."""
+        for param, error in self._required_not_found_errors.items():
+            if self._config.get(param) is None:
+                sys.stderr.write('Required parameter not found ')
+                sys.stderr.write('in {}.\n'.format(self._config_path))
+                sys.stderr.write(error)
                 sys.exit(1)
-        return config
+
+    def normalized_config(self):
+        """Return normalized config as dict."""
+        self._exist_requirements()
+        return self._config
