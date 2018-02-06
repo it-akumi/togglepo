@@ -12,7 +12,7 @@ class Config:
         self._required_not_found_errors = dict(
             API_TOKEN='Set Your Toggl API token.\n',
             WORKSPACE_ID='Set workspace id to access.\n',
-            AGGREGATION_START='Set start date of data aggregation.\n',
+            AGGREGATION_BEGIN='Set beginning date of data aggregation.\n',
         )
 
     def _exist_requirements(self):
@@ -20,7 +20,7 @@ class Config:
         for param, error in self._required_not_found_errors.items():
             if self._config.get(param) is None:
                 sys.stderr.write('Required parameter not found ')
-                sys.stderr.write('in {}.\n'.format(self._config_path))
+                sys.stderr.write('in {}.\n'.format(self._config))
                 sys.stderr.write(error)
                 sys.exit(1)
 

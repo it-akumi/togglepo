@@ -8,7 +8,9 @@ from prettytable import PrettyTable
 
 from tglp.api import TogglAPI
 from tglp.config import Config
-from tglp.period import Period
+from tglp.goal import Goal
+from tglp.span import divide_elapsed_span
+from tglp.span import remaining_days
 
 
 def normalize_second(seconds):
@@ -27,17 +29,25 @@ def main():
         os.getenv('HOME'),
         filename
     )
-
     with open(config_file_path, 'r') as raw_config:
         conf = Config(json.load(raw_config))
         config = conf.normalized_config()
-    api = TogglAPI(config.get('API_TOKEN'), config.get('WORKSPACE_ID'))
-    period = Period(config.get('AGGREGATION_START'), config.get('UNTIL'))
 
-    table = PrettyTable(['Project', 'Achieved'])
-    for prj, time_sec in api.total_time_entries(period.divide_passed_period()).items():
-        achieved = normalize_second(time_sec)
-        table.add_row([prj, achieved])
+    api = TogglAPI(config.get('API_TOKEN'), config.get('WORKSPACE_ID'))
+    begin = config.get('AGGREGATION_BEGIN')
+    time_entries = api.total_time_entries(divide_elapsed_span(begin))
+
+    table = PrettyTable(['Project', 'Goal', 'Achieved', 'Daily Goal', 'Rate'])
+    for prj in config.get('PROJECTS'):
+        name = prj.get('NAME')
+        goal = prj.get('GOAL')
+        achieved = time_entries.get(name)
+        g = Goal(goal, achieved)
+        end = prj.get('END', config.get('END'))
+        daily_goal = g.daily_goal(remaining_days(end), config.get('MAX_DAILY_WORKING_HOURS'))
+        rate = format(g.achievement_rate(), '.2f')
+        table.add_row([name, goal, normalize_second(achieved), normalize_second(daily_goal), rate])
+
     print(table)
 
 
