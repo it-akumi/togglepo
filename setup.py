@@ -4,7 +4,7 @@ from setuptools import setup
 
 setup(
     name='togglepo',
-    version='0.0',
+    version='1.0.0',
     description='Togglepo shows how much you achieve your goal.',
     author='Takumi Ishii',
     packages = find_packages(),

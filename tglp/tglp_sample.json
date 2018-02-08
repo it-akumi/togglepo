@@ -1,10 +1,15 @@
 {
-    "API_TOKEN": "Add your api token here",
+    "API_TOKEN": "Add your API TOKEN here.",
     "WORKSPACE_ID": 1234567,
-    "SINCE": "1970-01-01",
-    "GOALS": [
-        {"project1": 100},
-        {"project2": 250},
-        {"project3": 3000}
+    "AGGREGATION_BEGIN": "1970-01-01",
+    "PROJECTS": [
+        {
+            "NAME": "Project0",
+            "GOAL": 100
+        },
+        {
+            "NAME": "Project1",
+            "GOAL": 300
+        }
     ]
 }
