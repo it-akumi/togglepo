@@ -15,6 +15,15 @@ Togglepo shows how much you achieve your goals.
 ## Usage
 
 ## Install
+```
+$ pip install git+https://github.com/it-akumi/togglepo
+```
+
+All required libraries are installed together.
+
+So I recommend you to use virtual environment.
+
+See [here](https://docs.python.org/3/library/venv.html) for more details about venv.
 
 ## Author
 [Takumi Ishii](https://github.com/it-akumi)
