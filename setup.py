@@ -1,13 +1,15 @@
 from setuptools import find_packages
 from setuptools import setup
 
+import tglp
+
 
 setup(
     name='togglepo',
-    version='1.0.0',
+    version=tglp.__version__,
     description='Togglepo shows how much you achieve your goal.',
     author='Takumi Ishii',
-    packages = find_packages(),
+    packages=find_packages(),
     install_requires=[
         'click',
         'prettytable',
@@ -15,7 +17,7 @@ setup(
         'requests'
     ],
     url='https://github.com/it-akumi/togglepo',
-    entry_points = {
+    entry_points={
         'console_scripts': [
             'tglp = tglp.main:main'
         ]

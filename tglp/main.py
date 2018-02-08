@@ -4,11 +4,13 @@ import click
 
 from prettytable import PrettyTable
 
+import tglp
 from tglp.api import TogglAPI
 from tglp.config import Config
 from tglp.project import Project
 
 
+@click.version_option(message='Togglepo {}'.format(tglp.__version__))
 @click.command()
 def main():
     """Togglepo shows how much you achieve your goals."""
