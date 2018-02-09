@@ -10,11 +10,12 @@ from tglp.config import Config
 from tglp.project import Project
 
 
+@click.option('--conf', default='~/.tglp.json', help='Use specified config.')
 @click.version_option(message='Togglepo {}'.format(tglp.__version__))
 @click.command()
-def main():
+def main(conf):
     """Togglepo shows how much you achieve your goals."""
-    config = Config().config
+    config = Config(conf).config
 
     api = TogglAPI(
         config.get('API_TOKEN'),

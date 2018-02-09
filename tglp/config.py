@@ -8,7 +8,7 @@ import sys
 class Config:
     """A handler of config."""
 
-    def __init__(self, config_file='~/.tglp.json'):
+    def __init__(self, config_file):
         """Load config if it exists."""
         config_file_path = os.path.expanduser(config_file)
         if not os.path.exists(config_file_path):
