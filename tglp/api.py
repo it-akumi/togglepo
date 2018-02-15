@@ -2,8 +2,7 @@
 """A wrapper of Toggl API."""
 import sys
 from datetime import date
-
-from dateutil.relativedelta import relativedelta
+from datetime import timedelta
 
 import requests
 from requests.auth import HTTPBasicAuth
@@ -24,7 +23,6 @@ class TogglAPI:
         params = {
             'workspace_id': self._workspace_id,
             'user_agent': 'Togglepo',
-            # maximum date span (until - since) is 1 year.
             'since': since,
             'until': until
         }
@@ -41,28 +39,29 @@ class TogglAPI:
 
         return report.json()
 
-    def _divide_elapsed_span(self):
-        """Divide elapsed span (today - aggregation_begin) into years."""
-        begin_date = date(*map(int, self._aggregation_begin.split('-')))
+    def _divide_elapsed_span(self, until=date.today()):
+        """Divide span (today - aggregation_begin) to adjust to Toggl API."""
+        since = date(*map(int, self._aggregation_begin.split('-')))
         years = list()
-        since = begin_date
         date_format = '%Y-%m-%d'
         while True:
-            one_year_passed = since + relativedelta(years=1)
-            if date.today() <= one_year_passed:
+            # Maximum date span of Toggl API is 1 year.
+            # Use it as interval to minimize the number of execution of _query.
+            if (until - since).days <= 365:
                 year = dict(
                     since=date.strftime(since, date_format),
-                    until=date.strftime(date.today(), date_format)
+                    until=date.strftime(until, date_format)
                 )
                 years.append(year)
                 return years
             else:
+                after_one_year_from_since = since + timedelta(days=365)
                 year = dict(
                     since=date.strftime(since, date_format),
-                    until=date.strftime(one_year_passed, date_format)
+                    until=date.strftime(after_one_year_from_since, date_format)
                 )
                 years.append(year)
-                since = one_year_passed + relativedelta(days=1)
+                since = after_one_year_from_since + timedelta(days=1)
 
     def total_time_entries(self):
         """Aggregate time entry of all years."""
