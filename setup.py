@@ -13,7 +13,6 @@ setup(
     install_requires=[
         'click',
         'prettytable',
-        'python-dateutil',
         'requests'
     ],
     url='https://github.com/it-akumi/togglepo',
