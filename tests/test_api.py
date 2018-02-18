@@ -14,6 +14,12 @@ def api():
     return TogglAPI('pseudo_api_token', pseudo_workspace_id, '2017-01-01')
 
 
+def test_query_in_alive_network(api):
+    """Check if _query returns json response."""
+    report = api._query('2017-01-01', '2017-12-31')
+    assert isinstance(report, dict)
+
+
 def test_divide_elapsed_span_within_one_year(api):
     """Check if _divide_elapsed_span returns one year itself."""
     divided_span = api._divide_elapsed_span(until=date(2017, 12, 31))
