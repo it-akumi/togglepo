@@ -16,8 +16,22 @@ def api():
 
 def test_query_in_alive_network(api):
     """Check if _query returns json response."""
-    report = api._query('2017-01-01', '2017-12-31')
-    assert isinstance(report, dict)
+    pass
+
+
+def test_query_in_dead_network(api):
+    """Check if _query raises requests.exceptoins.ConnectionError."""
+    pass
+
+
+def test_query_with_valid_api_token(api):
+    """Check if requests get 200."""
+    pass
+
+
+def test_query_with_invalid_api_token(api):
+    """Check if requests get 401."""
+    pass
 
 
 def test_divide_elapsed_span_within_one_year(api):
