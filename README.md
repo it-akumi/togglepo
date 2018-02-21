@@ -13,6 +13,17 @@ Togglepo shows how much you achieve your goals.
 ## Requirement
 
 ## Usage
+```
+$ tglp --help
+Usage: tglp [OPTIONS]
+
+  Togglepo shows how much you achieve your goals.
+
+Options:
+  --version    Show the version and exit.
+  --conf TEXT  Use specified config.
+  --help       Show this message and exit.
+```
 
 ## Install
 ```
@@ -21,9 +32,7 @@ $ pip install git+https://github.com/it-akumi/togglepo
 
 All required libraries are installed together.
 
-So I recommend you to use virtual environment.
-
-See [here](https://docs.python.org/3/library/venv.html) for more details about venv.
+So I recommend you to use [virtual environment](https://docs.python.org/3/library/venv.html).
 
 ## Author
 [Takumi Ishii](https://github.com/it-akumi)
