@@ -1,9 +1,10 @@
 # coding:utf-8
 """Test for tglp.api."""
 from datetime import date
-from unittest.mock import MagicMock
+from unittest.mock import MagicMock, patch
 
 import pytest
+
 import requests
 
 from tglp.api import TogglAPI
@@ -18,9 +19,10 @@ def api():
 
 def test_query_in_alive_network(api):
     """Check if _query returns json response."""
-    mock_requests = MagicMock(spec=requests)
-    mock_requests.get().json.return_value = {}
-    report = api._query(since='2017-01-01', until='2017-12-31')
+    mock_requests_get = MagicMock(spec=requests.get)
+    mock_requests_get().json.return_value = {}
+    with patch('requests.get', mock_requests_get):
+        report = api._query(since='2017-01-01', until='2017-12-31')
     assert isinstance(report, dict)
 
 
