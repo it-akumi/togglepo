@@ -20,7 +20,8 @@ def api():
 def test_query_in_alive_network(api):
     """Check if _query returns json response."""
     mock_requests_get = MagicMock(spec=requests.get)
-    mock_requests_get().json.return_value = {}
+    mock_requests_get.return_value = MagicMock(spec=requests.models.Response)
+    mock_requests_get.return_value.json.return_value = {}
     with patch('requests.get', mock_requests_get):
         report = api._query(since='2017-01-01', until='2017-12-31')
     assert isinstance(report, dict)
