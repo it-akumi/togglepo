@@ -28,8 +28,13 @@ def test_query_in_alive_network(api):
 
 
 def test_query_in_dead_network(api):
-    """Check if _query raises requests.exceptoins.ConnectionError."""
-    pass
+    """Exit(1) If _query raises requests.exceptions.ConnectionError."""
+    mock_requests_get = MagicMock(
+        spec=requests.get,
+        side_effect=requests.exceptions.ConnectionError
+    )
+    with patch('requests.get', mock_requests_get), pytest.raises(SystemExit):
+        api._query(since='2017-01-01', until='2017-12-31')
 
 
 def test_query_with_valid_api_token(api):
