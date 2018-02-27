@@ -1,7 +1,7 @@
 # coding:utf-8
 """Test for tglp.api."""
 from datetime import date
-from unittest.mock import MagicMock, patch
+from unittest.mock import patch
 
 import pytest
 
@@ -27,8 +27,22 @@ def test_query_in_alive_network(mock_requests_get, api):
 
 @patch('requests.get')
 def test_query_in_dead_network(mock_requests_get, api):
-    """exit(1) If _query raises requests.exceptions.ConnectionError."""
-    mock_requests_get.side_effect=requests.exceptions.ConnectionError
+    """exit(1) if _query raises requests.exceptions.ConnectionError."""
+    mock_requests_get.side_effect = requests.exceptions.ConnectionError
+    with pytest.raises(SystemExit):
+        api._query(since='2017-01-01', until='2017-12-31')
+
+
+@patch('requests.get')
+def test_query_when_api_returns_4xx(mock_requests_get, api):
+    """exit(1) if Toggl API returns 4xx."""
+    # When request format is invalid
+    mock_requests_get.return_value.status_code = 400
+    with pytest.raises(SystemExit):
+        api._query(since='1000-01-01', until='1000-12-31')
+
+    # When api token is invalid
+    mock_requests_get.return_value.status_code = 401
     with pytest.raises(SystemExit):
         api._query(since='2017-01-01', until='2017-12-31')
 
