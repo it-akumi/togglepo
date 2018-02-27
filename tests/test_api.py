@@ -17,23 +17,19 @@ def api():
     return TogglAPI('pseudo_api_token', pseudo_workspace_id, '2017-01-01')
 
 
-def test_query_in_alive_network(api):
+@patch('requests.get')
+def test_query_in_alive_network(mock_requests_get, api):
     """Check if _query returns json response."""
-    mock_requests_get = MagicMock(spec=requests.get)
-    mock_requests_get.return_value = MagicMock(spec=requests.models.Response)
     mock_requests_get.return_value.json.return_value = {}
-    with patch('requests.get', mock_requests_get):
-        report = api._query(since='2017-01-01', until='2017-12-31')
+    report = api._query(since='2017-01-01', until='2017-12-31')
     assert isinstance(report, dict)
 
 
-def test_query_in_dead_network(api):
-    """Exit(1) If _query raises requests.exceptions.ConnectionError."""
-    mock_requests_get = MagicMock(
-        spec=requests.get,
-        side_effect=requests.exceptions.ConnectionError
-    )
-    with patch('requests.get', mock_requests_get), pytest.raises(SystemExit):
+@patch('requests.get')
+def test_query_in_dead_network(mock_requests_get, api):
+    """exit(1) If _query raises requests.exceptions.ConnectionError."""
+    mock_requests_get.side_effect=requests.exceptions.ConnectionError
+    with pytest.raises(SystemExit):
         api._query(since='2017-01-01', until='2017-12-31')
 
 
