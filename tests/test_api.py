@@ -37,16 +37,6 @@ def test_query_in_dead_network(api):
         api._query(since='2017-01-01', until='2017-12-31')
 
 
-def test_query_with_valid_api_token(api):
-    """Check if requests get 200."""
-    pass
-
-
-def test_query_with_invalid_api_token(api):
-    """Check if requests get 401."""
-    pass
-
-
 def test_divide_elapsed_span_within_one_year(api):
     """Check if _divide_elapsed_span returns one year itself."""
     divided_span = api._divide_elapsed_span(until=date(2017, 12, 31))
