@@ -34,15 +34,20 @@ def test_query_in_dead_network(mock_requests_get, api):
 
 
 @patch('requests.get')
-def test_query_when_api_returns_4xx(mock_requests_get, api):
+def test_query_when_api_returns_errors(mock_requests_get, api):
     """exit(1) if Toggl API returns 4xx."""
-    # When request format is invalid
+    # When AGGREGATION_BEGIN is invalid
     mock_requests_get.return_value.status_code = 400
     with pytest.raises(SystemExit):
         api._query(since='1000-01-01', until='1000-12-31')
 
-    # When api token is invalid
+    # When API_TOKEN is invalid
     mock_requests_get.return_value.status_code = 401
+    with pytest.raises(SystemExit):
+        api._query(since='2017-01-01', until='2017-12-31')
+
+    # When WORKSPACE_ID is invalid
+    mock_requests_get.return_value.status_code = 403
     with pytest.raises(SystemExit):
         api._query(since='2017-01-01', until='2017-12-31')
 
