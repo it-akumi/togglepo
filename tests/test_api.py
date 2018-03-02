@@ -20,6 +20,7 @@ def api():
 @patch('requests.get')
 def test_query_in_alive_network(mock_requests_get, api):
     """Check if _query returns json response."""
+    mock_requests_get.return_value.status_code = 200
     mock_requests_get.return_value.json.return_value = {}
     report = api._query(since='2017-01-01', until='2017-12-31')
     assert isinstance(report, dict)
