@@ -34,10 +34,21 @@ class TogglAPI:
                 auth=HTTPBasicAuth(self._api_token, 'api_token')
             )
         except requests.exceptions.ConnectionError:
-            sys.stderr.write('Failed to connect to api server.\n')
+            sys.stderr.write('Failed to connect to api server\n')
             sys.exit(1)
 
-        return report.json()
+        # Check if requests succeeded or not
+        error_messages = {
+            400: 'You set invalid AGGREGATION_BEGIN',
+            401: 'You set invalid API_TOKEN',
+            403: 'You set wrong WORKSPACE_ID',
+        }
+        if report.status_code == 200:
+            return report.json()
+        else:
+            sys.stderr.write('Request failed\n')
+            sys.stderr.write('{}\n'.format(error_messages[report.status_code]))
+            sys.exit(1)
 
     def _divide_elapsed_span(self, until=date.today()):
         """Divide span (today - aggregation_begin) to adjust to Toggl API."""
