@@ -17,6 +17,12 @@ def time_entries():
     return {'test_project': 12.21 * 3600, 'pseudo_project': 1000}
 
 
+def test_init_when_goal_is_0():
+    """Check if error happens when project goal is 0."""
+    with pytest.raises(SystemExit):
+        Project('project_without_goal', 0)
+
+
 def test_set_achieved_sec(project, time_entries):
     """Check if achieved_sec is set correctly."""
     project.set_achieved_sec(time_entries)
