@@ -14,13 +14,12 @@ from tglp.project import Project
 
 def print_table(project_instances):
     """Print project infomation in tabular format."""
-    project_table = PrettyTable(['Project', 'Goal', 'Achieved', 'Rate'])
+    project_table = PrettyTable(['Project', 'Goal', 'Achieved'])
     for prj in project_instances:
         project_table.add_row([
             prj.name,
             str(prj.goal_h) + 'h',
             prj.normalized_achieved_sec(),
-            prj.get_achievement_rate()
         ])
     print(project_table)
 
@@ -32,7 +31,6 @@ def print_json(project_instances):
             Project=prj.name,
             Goal=str(prj.goal_h) + 'h',
             Achieved=prj.normalized_achieved_sec(),
-            Rate=prj.get_achievement_rate()
         ) for prj in project_instances
     ]
     print(json.dumps(project_json))
