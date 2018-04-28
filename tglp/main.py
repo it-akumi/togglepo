@@ -39,7 +39,7 @@ def print_json(project_instances):
 
 
 @click.option('--conf', default='~/.tglp.json', help='Use specified config.')
-@click.option('--json', is_flag=True, help='Print in json format.')
+@click.option('--json', is_flag=True, help='Print in JSON format.')
 @click.version_option(message='Togglepo {}'.format(tglp.__version__))
 @click.command()
 def main(conf, json):

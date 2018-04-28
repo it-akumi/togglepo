@@ -11,6 +11,7 @@ Togglepo shows how much you achieve your goals.
 ## Demo
 
 ## Requirement
+* Python >= 3.5
 
 ## Usage
 ```
@@ -21,6 +22,7 @@ Usage: tglp [OPTIONS]
 
 Options:
   --version    Show the version and exit.
+  --json       Print in JSON format.
   --conf TEXT  Use specified config.
   --help       Show this message and exit.
 ```
